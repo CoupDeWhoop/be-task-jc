@@ -1,6 +1,7 @@
 const app = require("../app");
 const db = require("../db/connection");
 const request = require("supertest");
+const { getStudentById } = require("../controllers/students.controller");
 const seed = require("../db/seed");
 
 beforeEach(() => seed());
@@ -43,6 +44,20 @@ describe("Students api", () => {
 
       expect(response.body).toHaveProperty("error");
       expect(response.body.error).toBe("Invalid request");
+    });
+
+    test("409 - conflict on unique email field", async () => {
+      const newStudent = {
+        name: "Jason Parse",
+        email: "krascal@gmail.com",
+        date_of_birth: "23/09/2009",
+        entry_year: 2020,
+      };
+      const response = await request(app)
+        .post("/api/students")
+        .send(newStudent)
+        .expect(409);
+      expect(response.body.error).toBe("Email already exists.");
     });
   });
 
@@ -142,6 +157,34 @@ describe("Students api", () => {
       const response = await request(app)
         .patch("/api/students/1")
         .send(updates)
+        .expect(400);
+      expect(response.body.error).toBe("Invalid request");
+    });
+  });
+
+  describe("DELETE /api/students", () => {
+    test("204 should delete the student with the specified ID", async () => {
+      const studentId = 1;
+      const response = await request(app)
+        .delete(`/api/students/${studentId}`)
+        .expect(204);
+      expect(response.body).toEqual({});
+
+      const checkDb = await request(app)
+        .get(`/api/students/${studentId}`)
+        .expect(404);
+    });
+
+    test("404 - should reject a request to delete a non-existent student id", async () => {
+      const response = await request(app)
+        .delete(`/api/students/9239`)
+        .expect(404);
+      expect(response.body.message).toBe("Student not found.");
+    });
+
+    test("400 returns an error when ID is malformed", async () => {
+      const response = await request(app)
+        .delete(`/api/students/invalid_id`)
         .expect(400);
       expect(response.body.error).toBe("Invalid request");
     });

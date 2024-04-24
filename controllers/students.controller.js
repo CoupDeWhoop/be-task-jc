@@ -3,6 +3,7 @@ const {
   selectStudents,
   selectStudentById,
   updateStudent,
+  removeStudent,
 } = require("../models/students.model");
 const { ukDateToSql } = require("../utils/dateUtil");
 
@@ -48,6 +49,16 @@ exports.patchStudent = async (req, res, next) => {
 
     const student = await updateStudent(id, updates);
     res.status(200).send({ student });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.deleteStudent = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await removeStudent(id);
+    res.status(204).send();
   } catch (error) {
     next(error);
   }

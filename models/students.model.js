@@ -43,8 +43,18 @@ exports.updateStudent = async (id, updates) => {
   queryStr += `WHERE id = $${paramIndex} RETURNING *;`;
   values.push(id);
   const { rows } = await db.query(queryStr, values);
-  if (rows.length === 0) {
+  if (rows.length === 0)
     return Promise.reject({ status: 404, message: "Student not found." });
-  }
+
   return rows[0];
+};
+
+exports.removeStudent = async (id) => {
+  const { rowCount } = await db.query("DELETE from students WHERE id = $1;", [
+    id,
+  ]);
+  if (rowCount === 0)
+    return Promise.reject({ status: 404, message: "Student not found." });
+
+  return;
 };
