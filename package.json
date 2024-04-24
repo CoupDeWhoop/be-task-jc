@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "commonjs",
   "scripts": {
     "test-seed": "PGDATABASE=students jest seed.test.js",
+    "test-app": "PGDATABASE=students jest app.test.js --forceExit",
     "setup-db": "psql -f ./db/students.sql"
   },
   "keywords": [],

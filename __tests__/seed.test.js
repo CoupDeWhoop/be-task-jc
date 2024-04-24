@@ -23,6 +23,7 @@ describe("seed students", () => {
     return db.query(`SELECT * FROM students;`).then(({ rows: students }) => {
       expect(students).toHaveLength(2);
       students.forEach((student) => {
+        console.log(student);
         expect(student).toHaveProperty("id");
         expect(student).toHaveProperty("name");
         expect(student).toHaveProperty("email");
