@@ -41,6 +41,11 @@ exports.patchStudent = async (req, res, next) => {
   try {
     const { id } = req.params;
     const updates = req.body;
+
+    if (Object.keys(updates).length === 0) {
+      res.status(400).send({ error: "Update fields required" });
+    }
+
     const student = await updateStudent(id, updates);
     res.status(200).send({ student });
   } catch (error) {

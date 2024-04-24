@@ -24,7 +24,12 @@ app.all("/*", (req, res, next) => {
 
 app.use((err, req, res, next) => {
   console.log(err);
-  if (err.code === "22P02" || err.code === "23502" || err.code === "22007") {
+  if (
+    err.code === "22P02" ||
+    err.code === "23502" ||
+    err.code === "22007" ||
+    err.code === "42703"
+  ) {
     res.status(400).send({ error: "Invalid request" });
   }
   if (err.status) {

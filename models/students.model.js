@@ -42,5 +42,9 @@ exports.updateStudent = async (id, updates) => {
 
   queryStr += `WHERE id = $${paramIndex} RETURNING *;`;
   values.push(id);
-  return db.query(queryStr, values).then(({ rows }) => rows[0]);
+  const { rows } = await db.query(queryStr, values);
+  if (rows.length === 0) {
+    return Promise.reject({ status: 404, message: "Student not found." });
+  }
+  return rows[0];
 };

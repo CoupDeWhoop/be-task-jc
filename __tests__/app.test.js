@@ -117,5 +117,33 @@ describe("Students api", () => {
         ...updates,
       });
     });
+
+    test("404 should return an error when updating with invalid student ID", async () => {
+      const updates = {
+        email: "newemail@email.com",
+        entry_year: 2008,
+      };
+      const response = await request(app)
+        .patch(`/api/students/9999`)
+        .send(updates)
+        .expect(404);
+      expect(response.body.message).toBe("Student not found.");
+    });
+
+    test("400 should return an error when no update fields are provided", async () => {
+      const response = await request(app).patch("/api/students/1").expect(400);
+      expect(response.body.error).toBe("Update fields required");
+    });
+
+    test("400 should return an error when updating a non-existent field", async () => {
+      const updates = {
+        not_a_prop: "value",
+      };
+      const response = await request(app)
+        .patch("/api/students/1")
+        .send(updates)
+        .expect(400);
+      expect(response.body.error).toBe("Invalid request");
+    });
   });
 });
