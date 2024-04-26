@@ -5,14 +5,12 @@ const {
   updateStudent,
   removeStudent,
 } = require("../models/students.model");
-const { ukDateToSql } = require("../utils/dateUtil");
 
 exports.postStudent = async (req, res, next) => {
   try {
     const { name, email, date_of_birth, entry_year } = req.body;
-    const formattedDOB = ukDateToSql(date_of_birth);
 
-    const student = await insertStudent(name, email, formattedDOB, entry_year);
+    const student = await insertStudent(name, email, date_of_birth, entry_year);
     res.status(201).send({ student });
   } catch (error) {
     next(error);

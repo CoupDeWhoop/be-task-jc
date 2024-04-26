@@ -7,7 +7,8 @@
   "scripts": {
     "test-seed": "PGDATABASE=students jest seed.test.js",
     "test-app": "PGDATABASE=students jest app.test.js --forceExit",
-    "setup-db": "psql -f ./db/students.sql"
+    "setup-db": "psql -f ./db/students.sql",
+    "start": "PGDATABASE=students node listen.js"
   },
   "keywords": [],
   "author": "",

@@ -13,7 +13,7 @@ describe("Students api", () => {
       const newStudent = {
         name: "Jason Parse",
         email: "jp@json.com",
-        date_of_birth: "23/09/2009",
+        date_of_birth: "09/29/2009",
         entry_year: 2020,
       };
       const response = await request(app)
@@ -33,7 +33,7 @@ describe("Students api", () => {
     test("400 - returns an error when name is missing", async () => {
       const newStudent = {
         email: "jp@json.com",
-        date_of_birth: "23/09/2009",
+        date_of_birth: "09/23/2009",
         entry_year: 2020,
       };
 
@@ -50,7 +50,7 @@ describe("Students api", () => {
       const newStudent = {
         name: "Jason Parse",
         email: "krascal@gmail.com",
-        date_of_birth: "23/09/2009",
+        date_of_birth: "09/23/2009",
         entry_year: 2020,
       };
       const response = await request(app)
